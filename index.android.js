@@ -16,25 +16,8 @@ import {
   View
 } from 'react-native';
 import LoginPage from './LoginPage';
+import MasterPage from './MasterPage';
 //import SearchPage from './SearchPage';
-
-class HelloWorld extends Component {
-	
-	constructor(props) {
-		super(props);
-	}
-	
-	render() {
-	 
-		return (
-			<Text
-				style={styles.text}
-			>
-				Hello World! (Again)
-			</Text>
-		);
-	}
-}
 
 export default class AwesomeProject extends Component {
 	
@@ -42,18 +25,30 @@ export default class AwesomeProject extends Component {
 		super(props);
 	}
 	
+	changeComponent(component) {
+		this.setState({
+			componentSelected: component
+		});
+	}
+	
+	componentWillMount() {
+		this.setState({ componentSelected: 'Login' });
+	}
+	
+	renderComponent(component) {
+		//alert(component);
+		//component='Login';
+		if (component == 'Login')
+			return <LoginPage transition={this.changeComponent.bind(this)} />;
+		else
+			return <MasterPage transition={this.changeComponent.bind(this)} />;
+	}
+	
 	render() {
-	 
 		return (
-			<Navigator style={styles.container}
-				initialRoute={{
-					title: 'Property Finder',
-					index: 0
-				}}
-				renderScene={(route, navigator)=> {
-					return <LoginPage />
-				}}
-			/>
+			<View style={styles.container}>
+				{this.renderComponent(this.state.componentSelected)}
+			</View>
 		);
 	}
 }
